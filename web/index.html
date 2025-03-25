@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="notes3">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="manifest" href="manifest.json">
+
+  <script src="https://browser.sentry-cdn.com/7.80.0/bundle.tracing.replay.debug.min.js" crossorigin="anonymous"></script>
+  <script>
+    Sentry.onLoad(function () {
+      const userId = 'ppeach@medspeed.com';
+      //import * as Sentry from "@sentry/browser";
+
+      Sentry.init({
+        dsn: "https://10834599cbb5066f18ee019bfac67464@o1377784.ingest.us.sentry.io/4508978129731585",
+        init: true,
+        disableLogger: false,
+        debug: true,
+        tracesSampleRate: 1.0,
+        integrations: [
+                new Sentry.Replay({
+                  maskAllText: false,
+                  maskAllInputs: false,
+                  blockAllMedia: false
+                }),
+        ],
+        initialScope: {
+          user: { id: userId }
+        },
+        replaysSessionSampleRate: 1.0,
+        replaysOnErrorSampleRate: 1.0,
+      });
+    });
+  </script>
+</head>
+<body>
+  <!--<script src="https://js.sentry-cdn.com/10834599cbb5066f18ee019bfac67464.min.js" crossorigin="anonymous"></script>-->
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
