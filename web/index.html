@@ -17,36 +17,52 @@
   <link rel="icon" type="image/png" href="favicon.png"/>
   <link rel="manifest" href="manifest.json">
 
-  <script src="https://browser.sentry-cdn.com/7.80.0/bundle.tracing.replay.debug.min.js" crossorigin="anonymous"></script>
-  <script>
-    Sentry.onLoad(function () {
-      const userId = 'ppeach@medspeed.com';
-      //import * as Sentry from "@sentry/browser";
+  <!-- Sentry (Session Replay) -->
 
-      Sentry.init({
-        dsn: "https://10834599cbb5066f18ee019bfac67464@o1377784.ingest.us.sentry.io/4508978129731585",
-        init: true,
-        disableLogger: false,
-        debug: true,
-        tracesSampleRate: 1.0,
-        integrations: [
-                new Sentry.Replay({
-                  maskAllText: false,
-                  maskAllInputs: false,
-                  blockAllMedia: false
-                }),
-        ],
-        initialScope: {
-          user: { id: userId }
-        },
-        replaysSessionSampleRate: 1.0,
-        replaysOnErrorSampleRate: 1.0,
-      });
+  <!-- Script for bundle with replay, error, and tracing (needed to resolve debug errors) -->
+  <script
+          src="https://browser.sentry-cdn.com/9.9.0/bundle.tracing.replay.min.js"
+          integrity="sha384-1QMJBOYspQkyJ4R0n+SW6AQ7zlQ82wECEIFAyZeBuQN+wldXD6UtMAhABCyNVdYE"
+          crossorigin="anonymous"
+  ></script>
+
+  <!-- Script for the canvas replay integration (needed to resolve debug errors) -->
+  <script
+          src="https://browser.sentry-cdn.com/9.9.0/replay-canvas.min.js"
+          integrity="sha384-+wKojY3HW4X7d4jgLfsm/08HTfPkWj88Ev/nbLr7qApNYk7IGX5kh7z2+MqZVl76"
+          crossorigin="anonymous"
+  ></script>
+
+  <script>
+    import * as Sentry from '@sentry/browser';
+
+    Sentry.init({
+      // dsn below is refer to test project
+      dsn: "https://10834599cbb5066f18ee019bfac67464@o1377784.ingest.us.sentry.io/4508978129731585",
+      //dsn: "getIt<EnvironmentService>().sentryDns;",
+      // setting sample rates to 0 causes no recordings to be sent to Sentry
+      // tried setting replaysample rates to 1.0 as well
+      replaysSessionSampleRate: 0,
+      replaysOnErrorSampleRate: 0,
+      integrations: [
+        // Replay integration
+        Sentry.replayIntegration(),
+        // Used to enable canvas recording with Replay
+        Sentry.replayCanvasIntegration(),
+      ],
     });
+
+    const replay = Sentry.getReplay();
+    // This starts in `session` mode, regardless of sample rates
+    replay.start();
+    // OR
+    // This starts in `buffer` mode, regardless of sample rates
+    replay.startBuffering();
   </script>
 </head>
 <body>
   <!--<script src="https://js.sentry-cdn.com/10834599cbb5066f18ee019bfac67464.min.js" crossorigin="anonymous"></script>-->
-  <script src="flutter_bootstrap.js" async></script>
+  <!--<script src="flutter_bootstrap.js" async></script>-->
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
