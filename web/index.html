@@ -34,16 +34,14 @@
   ></script>
 
   <script>
-    import * as Sentry from '@sentry/browser';
-
     Sentry.init({
       // dsn below is refer to test project
       dsn: "https://10834599cbb5066f18ee019bfac67464@o1377784.ingest.us.sentry.io/4508978129731585",
       //dsn: "getIt<EnvironmentService>().sentryDns;",
       // setting sample rates to 0 causes no recordings to be sent to Sentry
       // tried setting replaysample rates to 1.0 as well
-      replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0,
+      replaysSessionSampleRate: 1.0,
+      replaysOnErrorSampleRate: 1.0,
       integrations: [
         // Replay integration
         Sentry.replayIntegration(),
@@ -51,13 +49,10 @@
         Sentry.replayCanvasIntegration(),
       ],
     });
-
-    const replay = Sentry.getReplay();
-    // This starts in `session` mode, regardless of sample rates
-    replay.start();
-    // OR
-    // This starts in `buffer` mode, regardless of sample rates
-    replay.startBuffering();
+    Sentry.setUser({
+      id: 'test',
+      email: 'ppeach@medspeed.com'
+    })
   </script>
 </head>
 <body>
